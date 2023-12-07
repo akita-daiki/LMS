@@ -1,5 +1,7 @@
 package com.book.dao;
 
+import java.util.List;
+
 import org.apache.ibatis.annotations.Mapper;
 
 import com.book.entity.MstBook;
@@ -53,4 +55,10 @@ public interface MstBookMapper {
      * @mbg.generated Tue Dec 05 16:43:51 JST 2023
      */
     int updateByPrimaryKey(MstBook record);
+    
+    /**
+     * 全件取得
+     * @return
+     */
+    List<MstBook> findAll();
 }

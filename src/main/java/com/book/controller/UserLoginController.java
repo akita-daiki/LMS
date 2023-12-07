@@ -33,7 +33,7 @@ public class UserLoginController {
         LoginUser user = userLoginService.authenticate(userName, password);
         if (user != null) {
             // ログイン成功
-            return "redirect:/home";
+            return "redirect:/book/list";
         } else {
             // ログイン失敗
             model.addAttribute("error", "ユーザー名またはパスワードが正しくありません。");

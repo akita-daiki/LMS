@@ -27,6 +27,10 @@
     BOOK_ID, TITLE, PUBLISHER, AUTHOR, GENRE1, GENRE2, LENDING_FLAG, CREATE_DATE, UPDATE_DATE, 
     DELETE_FLAG
   </sql>
+  <!-- 全件検索 -->
+    <select id="findAll" resultType="com.book.entity.MstBook">
+        SELECT * FROM mst_book WHERE delete_flag = 0
+    </select>
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     <!--
       WARNING - @mbg.generated

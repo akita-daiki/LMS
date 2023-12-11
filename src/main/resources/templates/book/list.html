@@ -2,19 +2,25 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
 	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
 
-<head th:replace="common/head :: head_fragment(title = '図書情報一覧', scripts = ~{::script}, links = ~{::link})"></head>
+<head th:replace="common/head :: head_fragment(title = '図書情報一覧', scripts = ~{::script}, links = ~{::link})">
+	<link rel="stylesheet" href="css/bootstrap.css">
+</head>
+<link rel="stylesheet" href="css/bootstrap.css">
 
 <body>
 	<div class="container">
 		<h1>図書情報一覧</h1>
+
 		<div class="float-end">
+			<!-- モーダルのボタン -->
+			<button id="modalView" th:href="@{/book/search}">モーダルを表示</button>
 			<a th:href="@{/book/add}" class="btn btn-primary">書籍登録</a>
 		</div>
 		<div th:if="${booklist}">
 			<table class="table table-striped">
 				<thead>
 					<tr>
-						<th>ID</th>
+						<!--<th>ID</th>-->
 						<th>タイトル</th>
 						<th>出版社</th>
 						<th>著者</th>
@@ -26,18 +32,70 @@
 				</thead>
 				<tbody>
 					<tr th:each="book : ${booklist}" th:object="${book}" class="align-middle">
-						<td th:text="*{bookId}"></td>
+						<!--<td th:text="*{bookId}"></td>-->
 						<td th:text="*{title}"></td>
 						<td th:text="*{publisher}"></td>
 						<td th:text="*{author}"></td>
 						<td th:text="*{genreString1}"></td>
 						<td th:text="*{genreString2}"></td>
 						<td th:text="*{lendString}"></td>
+						<td>
+							<a th:href="@{'/book/edit/' + ${book.bookId}}" class="btn btn-primary">編集</a>
+							<a th:href="@{'/book/delete/' + ${book.bookId}}" class="btn btn-secondary">削除</a>
+						</td>
 					</tr>
 				</tbody>
 			</table>
 		</div>
 	</div>
+	<div class="popup" id="firstTimeModal">
+		<div class="popup-inner">
+			<div class="modalCloseButton" id="modalCloseCloss"><span class="lineClose"></span></div>
+
+			<!-- 検索フォーム -->
+			<form th:method="get" id="searchform" class="searchform">
+				<div>
+					<input type="text" placeholder="タイトル" th:field="*{title}" class="searchform__input"  />
+				</div>
+				<div>
+					<input type="text" placeholder="出版社" th:field="*{publisher}" class="searchform__input" />
+				</div>
+				<div>
+					<input type="text" placeholder="著者" th:field="*{author}" class="searchform__input" />
+				</div>
+				<div>
+					<span class="text-danger"></span>
+					<select th:field="*{genre1}" class="form-control">
+						<option value="">ジャンルを選択してください</option>
+						<option th:each="genre : ${genres}" th:value="${genre.code}" th:text="${genre.displayName}">
+						</option>
+					</select>
+				</div>
+				<button type="submit" id="searchsubmit" class="searchform__submit"><i class="fa fa-search"></i></button>
+			</form>
+			<!-- 検索フォーム終わり -->
+
+		</div>
+		<div class="black-background" id="js-black-bg"></div>
+	</div>
+
+	<!-- モーダルを制御するためのJavaScript -->
+	<script>
+		document.getElementById('modalView').addEventListener('click', () => {
+			const modal = document.getElementById('firstTimeModal');
+			modal.style.display = 'block';
+		});
+
+		document.getElementById('modalCloseCloss').addEventListener('click', () => {
+			const modal = document.getElementById('firstTimeModal');
+			modal.style.display = 'none';
+		});
+
+		document.getElementById('js-black-bg').addEventListener('click', () => {
+			const modal = document.getElementById('firstTimeModal');
+			modal.style.display = 'none';
+		});
+	</script>
 </body>
 
 </html>

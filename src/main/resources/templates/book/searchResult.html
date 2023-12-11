@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+
+<head th:replace="common/head :: head_fragment(title = '図書情報編集', scripts = ~{::script}, links = ~{::link})"></head>
+
+<body>
+	<div class="container">
+		<h1>図書情報一覧</h1>
+
+		<div class="float-end">
+			<!-- モーダルのボタン -->
+			<button id="modalView" th:href="@{/book/search}">モーダルを表示</button>
+		</div>
+		<div th:if="${booklist}">
+			<table class="table table-striped">
+				<thead>
+					<tr>
+						<!--<th>ID</th>-->
+						<th>タイトル</th>
+						<th>出版社</th>
+						<th>著者</th>
+						<th>ジャンル1</th>
+						<th>ジャンル2</th>
+						<th>貸出可否</th>
+						<th></th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr th:each="book : ${booklist}" th:object="${book}" class="align-middle">
+						<!--<td th:text="*{bookId}"></td>-->
+						<td th:text="*{title}"></td>
+						<td th:text="*{publisher}"></td>
+						<td th:text="*{author}"></td>
+						<td th:text="*{genreString1}"></td>
+						<td th:text="*{genreString2}"></td>
+						<td th:text="*{lendString}"></td>
+						<td>
+							<a th:href="@{'/book/edit/' + ${book.bookId}}" class="btn btn-primary">編集</a>
+							<a th:href="@{'/book/delete/' + ${book.bookId}}" class="btn btn-secondary">削除</a>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</div>
+</body>
+
+</html>

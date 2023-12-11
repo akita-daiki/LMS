@@ -77,6 +77,45 @@ public class BookManageService {
 		mstBookMapper.insert(mstBook);
 
 	}
+	
+	/**
+	 * 図書更新
+	 * @param mstBook
+	 */
+	public void update(MstBook mstBook) {
+		Timestamp nowDate = DateUtils.getNowDate();
+		
+		MstBook beforeMstBook = mstBookMapper.selectByPrimaryKey(mstBook.getBookId());
+		mstBook.setCreateDate(beforeMstBook.getCreateDate());
+		mstBook.setUpdateDate(nowDate);
+		
+		mstBookMapper.updateByPrimaryKeySelective(mstBook);
+	}
+	
+	/**
+	 * 図書検索
+	 * @param mstBook
+	 */
+	public void search(MstBook mstBook) {
+		mstBookMapper.selectBooks(mstBook);
+	}
+	
+	/**
+	 * 主キー検索
+	 * @param bookId
+	 * @return
+	 */
+	public MstBook findById(Integer bookId) {
+		return mstBookMapper.selectByPrimaryKey(bookId);
+	}
+	
+	/**
+	 * 図書情報削除
+	 * @param bookId
+	 */
+	public void delete(Integer bookId) {
+		mstBookMapper.logicalDeleteByPrimaryKey(bookId);
+	}
 
 	/**
 	 * 連番採取

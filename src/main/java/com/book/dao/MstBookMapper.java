@@ -61,4 +61,9 @@ public interface MstBookMapper {
      * @return
      */
     List<MstBook> findAll();
+    
+    /**
+     * 連番採取
+     */
+    Integer getLastBookId();
 }

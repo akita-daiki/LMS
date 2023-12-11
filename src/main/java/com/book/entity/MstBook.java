@@ -3,6 +3,9 @@ package com.book.entity;
 import java.io.Serializable;
 import java.util.Date;
 
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 import lombok.Data;
 
 @Data
@@ -26,6 +29,8 @@ public class MstBook implements Serializable {
      *
      * @mbg.generated Tue Dec 05 16:43:51 JST 2023
      */
+    @NotEmpty(message = "タイトルを入力してください")
+	@Size(max = 100)
     private String title;
 
     /**
@@ -35,6 +40,8 @@ public class MstBook implements Serializable {
      *
      * @mbg.generated Tue Dec 05 16:43:51 JST 2023
      */
+    @NotEmpty(message = "出版社を入力してください")
+	@Size(max = 50)
     private String publisher;
 
     /**
@@ -44,6 +51,7 @@ public class MstBook implements Serializable {
      *
      * @mbg.generated Tue Dec 05 16:43:51 JST 2023
      */
+    @Size(max = 50)
     private String author;
 
     /**
@@ -53,6 +61,7 @@ public class MstBook implements Serializable {
      *
      * @mbg.generated Tue Dec 05 16:43:51 JST 2023
      */
+    @NotNull(message = "ジャンルを選択してください")
     private Integer genre1;
 
     /**

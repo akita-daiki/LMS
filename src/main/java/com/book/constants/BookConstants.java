@@ -20,10 +20,10 @@ public class BookConstants {
 	    QUALIFICATION(15, "資格"),
 	    BUSINESS(16, "ビジネス");
 
-	    private final int code;
+	    private final Integer code;
 	    private final String displayName;
 
-	    GenreType(int code, String displayName) {
+	    GenreType(Integer code, String displayName) {
 	        this.code = code;
 	        this.displayName = displayName;
 	    }
@@ -36,7 +36,8 @@ public class BookConstants {
 	        return displayName;
 	    }
 
-	    public static GenreType fromCode(int code) {
+	    // 数字から文字列変換
+	    public static GenreType fromCode(Integer code) {
 	        for (GenreType type : GenreType.values()) {
 	            if (type.getCode() == code) {
 	                return type;
@@ -44,6 +45,15 @@ public class BookConstants {
 	        }
 	        throw new IllegalArgumentException("Invalid code: " + code);
 	    }
+	    
+	    public static String getGenre(Integer code) {
+    		for(GenreType type: GenreType.values()) {
+    			if(type.code.equals(code)) {
+    				return type.displayName;
+    			}
+    		}
+    		return null;
+    	}
 	}
 
 

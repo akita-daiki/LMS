@@ -18,8 +18,8 @@
 			<property name="trimStrings" value="true" />
 		</javaModelGenerator>
 
-		<sqlMapGenerator targetPackage="dao"
-			targetProject="src/main/resources">
+		<sqlMapGenerator targetPackage="com.book.dao"
+			targetProject="src/main/java">
 			<property name="enableSubPackages" value="true" />
 		</sqlMapGenerator>
 
@@ -28,8 +28,7 @@
 			<property name="enableSubPackages" value="true" />
 		</javaClientGenerator>
 
-		
-		<table tableName="loginuser" enableDeleteByExample="false"
+		<table tableName="mst_book" enableDeleteByExample="false"
 			enableCountByExample="false" enableUpdateByExample="false"
 			selectByExampleQueryId="false" enableSelectByExample="false"
 			modelType="flat">
@@ -38,6 +37,7 @@
 				identity="true" />
 			<!-- You can add more column overrides here -->
 		</table>
+		
 		
 	</context>
 </generatorConfiguration>

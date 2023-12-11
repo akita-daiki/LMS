@@ -67,6 +67,11 @@
 			<version>3.0.3</version>
 			<scope>test</scope>
 		</dependency>
+		<dependency>
+			<groupId>commons-beanutils</groupId>
+			<artifactId>commons-beanutils</artifactId>
+			<version>1.9.4</version> <!-- Use the latest version -->
+		</dependency>
 	</dependencies>
 	<build>
 		<plugins>

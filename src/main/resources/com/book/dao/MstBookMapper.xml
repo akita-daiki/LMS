@@ -200,11 +200,12 @@
 		UPDATE `mst_book` SET `DELETE_FLAG` = 1, `UPDATE_DATE` = CURRENT_TIMESTAMP WHERE `BOOK_ID` = #{bookId,jdbcType=INTEGER}
 	</update>
 	<!-- 検索クエリ -->
-    <select id="searchBooks" resultType="com.book.entity.MstBook">
+    <select id="searchBook" resultType="com.book.entity.MstBook">
         SELECT * FROM mst_book
         WHERE (title LIKE CONCAT('%', #{title}, '%') OR #{title} IS NULL)
           AND (publisher LIKE CONCAT('%', #{publisher}, '%') OR #{publisher} IS NULL)
           AND (author LIKE CONCAT('%', #{author}, '%') OR #{author} IS NULL)
           AND ((genre1 = #{genre1} OR genre2 = #{genre1}) OR #{genre1} IS NULL)
+          AND DELETE_FLAG = 0
     </select>
 </mapper>

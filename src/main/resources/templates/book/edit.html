@@ -36,7 +36,7 @@
 				<label>ジャンル2：</label>
 				<select th:field="*{genre2}" class="form-control">
 					<option value="">---</option>
-					<option th:each="genre : ${genres}" th:　value="${genre.code}" th:text="${genre.displayName}">
+					<option th:each="genre : ${genres}" th:value="${genre.code}" th:text="${genre.displayName}">
 					</option>
 				</select>
 			</div>

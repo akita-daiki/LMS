@@ -2,16 +2,22 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
 	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
 
-<head th:replace="common/head :: head_fragment(title = '図書情報編集', scripts = ~{::script}, links = ~{::link})"></head>
+<head th:replace="common/head :: head_fragment(title = '検索結果', scripts = ~{::script}, links = ~{::link})">
+</head>
 
 <body>
 	<div class="container">
-		<h1>図書情報一覧</h1>
+		<h1>検索結果</h1>
+		<h3 class="text-warning" th:text="${#lists.size(booklist)}" style="display:inline"></h3>
+		<h5 style="display:inline">件</h5>
+		
 
 		<div class="float-end">
 			<!-- モーダルのボタン -->
-			<button id="modalView" th:href="@{/book/search}">モーダルを表示</button>
+			<button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#searchModal">書籍検索</button>
+			<a th:href="@{/book/list}" class="btn btn-primary" >一覧に戻る</a>
 		</div>
+		
 		<div th:if="${booklist}">
 			<table class="table table-striped">
 				<thead>
@@ -37,13 +43,53 @@
 						<td th:text="*{lendString}"></td>
 						<td>
 							<a th:href="@{'/book/edit/' + ${book.bookId}}" class="btn btn-primary">編集</a>
-							<a th:href="@{'/book/delete/' + ${book.bookId}}" class="btn btn-secondary">削除</a>
+							<a th:href="@{'/book/delete/' + ${book.bookId}}" class="btn btn-danger">削除</a>
 						</td>
 					</tr>
 				</tbody>
 			</table>
 		</div>
 	</div>
+<!-- 検索モーダル -->
+	<div class="modal fade" id="searchModal" tabindex="-1" aria-labelledby="searchModalLabel" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title" id="searchModalLabel">書籍検索</h5>
+					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+				</div>
+				<div class="modal-body">
+					<!-- 検索フォーム -->
+					<form th:action="@{/book/search}" th:object="${mstBook}" th:method="get">
+						<div class="mb-3">
+							<label for="title" class="form-label">タイトル</label>
+							<input type="text" class="form-control" id="title" th:field="*{title}">
+						</div>
+						<div class="mb-3">
+							<label for="publisher" class="form-label">出版社</label>
+							<input type="text" class="form-control" id="publisher" th:field="*{publisher}">
+						</div>
+						<div class="mb-3">
+							<label for="author" class="form-label">著者</label>
+							<input type="text" class="form-control" id="author" th:field="*{author}">
+						</div>
+						<div class="mb-3">
+							<label for="genre" class="form-label">ジャンル</label>
+							<select class="form-control" id="genre" th:field="*{genre1}">
+								<option value="">---</option>
+								<option th:each="genre : ${genres}" th:value="${genre.code}" th:text="${genre.displayName}"></option>
+							</select>
+						</div>
+						<div class="mb-3">
+							<button type="submit" class="btn btn-primary">検索</button>
+						</div>
+					</form>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">閉じる</button>
+				</div>
+			</div>
+		</div>
+	</div>
 </body>
-
 </html>

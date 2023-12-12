@@ -1,20 +1,29 @@
 body {
-  width: 90%;
-}
-table{
-    width: 100%;
-    border-collapse: collapse;
-  font-size: 12px;
+	width: 90%;
 }
 
-table th, table td {
-    border: 1px solid #ddd;
-    padding: 6px;
+table {
+	width: 100%;
+	border-collapse: collapse;
+	font-size: 12px;
 }
+
+table th,
+table td {
+	border: 1px solid #ddd;
+	padding: 6px;
+}
+
+.table-custom th,
+.table-custom td {
+	white-space: nowrap;
+}
+
 
 table th {
-  background-color: #F2F2F2;
+	background-color: #F2F2F2;
 }
+
 .center {
-  text-align: center;
+	text-align: center;
 }

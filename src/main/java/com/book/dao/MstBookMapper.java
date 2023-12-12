@@ -76,5 +76,5 @@ public interface MstBookMapper {
 	/**
 	 * 検索
 	 */
-	int selectBooks(MstBook record);
+	List<MstBook> searchBook(MstBook record);
 }

@@ -96,9 +96,41 @@ public class BookManageService {
 	 * 図書検索
 	 * @param mstBook
 	 */
-	public void search(MstBook mstBook) {
-		mstBookMapper.selectBooks(mstBook);
+	public  List<MstBookViewDto> search(MstBook mstBook) {
+		List<MstBook> list = mstBookMapper.searchBook(mstBook);
+		List<MstBookViewDto> result = list.stream().map(book -> {
+			MstBookViewDto dto = new MstBookViewDto();
+
+			// 元のMstBookのプロパティをコピー
+			dto.setBookId(book.getBookId());
+			dto.setTitle(book.getTitle());
+			dto.setPublisher(book.getPublisher());
+			dto.setAuthor(book.getAuthor());
+			dto.setCreateDate(book.getCreateDate());
+			dto.setUpdateDate(book.getUpdateDate());
+			dto.setDeleteFlag(book.getDeleteFlag());
+
+			// Enum変換
+			if (book.getGenre1() != null) {
+				GenreType genreType1 = GenreType.fromCode(book.getGenre1());
+				dto.setGenreString1(genreType1 != null ? genreType1.getDisplayName() : null);
+			}
+			if (book.getGenre2() != null) {
+				GenreType genreType2 = GenreType.fromCode(book.getGenre2());
+				dto.setGenreString2(genreType2 != null ? genreType2.getDisplayName() : null);
+			}
+			if (book.getLendingFlag() != null) {
+				AvailabilityType availabilityType = AvailabilityType.fromCode(book.getLendingFlag());
+				dto.setLendString(availabilityType != null ? availabilityType.getDisplayName() : null);
+			}
+
+			return dto;
+		}).collect(Collectors.toList());
+
+		return result;
+
 	}
+	
 	
 	/**
 	 * 主キー検索

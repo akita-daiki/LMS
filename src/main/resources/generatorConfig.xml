@@ -28,7 +28,7 @@
 			<property name="enableSubPackages" value="true" />
 		</javaClientGenerator>
 
-		<table tableName="mst_book" enableDeleteByExample="false"
+		<table tableName="user_info" enableDeleteByExample="false"
 			enableCountByExample="false" enableUpdateByExample="false"
 			selectByExampleQueryId="false" enableSelectByExample="false"
 			modelType="flat">

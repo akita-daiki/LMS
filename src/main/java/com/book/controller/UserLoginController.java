@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import com.book.entity.LoginUser;
+import com.book.entity.UserInfo;
 import com.book.service.UserLoginService;
 
 /**
@@ -27,10 +27,10 @@ public class UserLoginController {
     }
 
     @PostMapping("/login")
-    public String login(@RequestParam("userName") Integer userName,
+    public String login(@RequestParam("userId") Integer userId,
                         @RequestParam("password") String password,
                         Model model) {
-        LoginUser user = userLoginService.authenticate(userName, password);
+    	UserInfo user = userLoginService.authenticate(userId, password);
         if (user != null) {
             // ログイン成功
             return "redirect:/book/list";

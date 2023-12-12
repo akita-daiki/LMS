@@ -37,7 +37,7 @@ public class BookManageController {
 	 * @param model
 	 * @return
 	 */
-	@GetMapping(value = "/book/list")
+	@GetMapping("/book/list")
 	public String displayList(Model model) {
 		List<MstBookViewDto> bookList = bookManageService.findAll();
 		model.addAttribute("booklist", bookList);
@@ -147,8 +147,8 @@ public class BookManageController {
 	 */
 	@GetMapping("/book/search")
 	public String search(@ModelAttribute MstBook mstBook, BindingResult result, Model model) {
-		model.addAttribute("mstBook", new MstBook());
-		model.addAttribute("genres", GenreType.values());
-		return "redirect:/book/list";
+		List<MstBookViewDto> bookList = bookManageService.search(mstBook);
+		model.addAttribute("booklist", bookList);
+		return "book/searchResult";
 	}
 }

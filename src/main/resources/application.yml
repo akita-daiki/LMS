@@ -1,0 +1,10 @@
+mybatis:
+  configuration:
+    map-underscore-to-camel-case: true
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+#    url: jdbc:mysql://localhost/lms
+    url: jdbc:mysql://localhost:3306/lms?useSSL=false&characterEncoding=euc-jp
+    username: root
+    password: password

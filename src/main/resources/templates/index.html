@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head th:replace="~{common/head :: head_fragment(title = 'トップページ', scripts = ~{::script}, links = ~{::link})}"></head>
+<body>
+    <div class="container">
+        <h1 class="my-3">トップページ</h1>
+        <hr>
+        <p class="fs-5" sec:authorize="authenticated">ようこそ<span sec:authentication="principal.loginUser.userName">ユーザー</span>さん</p>
+        <ul>
+            <li sec:authorize="not authenticated"><a th:href="@{/login}">ログインページへ</a></li>
+            <li sec:authorize-url="/general"><a href="general.html" th:href="@{/general}" class="link-primary">一般ユーザーページへ</a></li>
+            <li sec:authorize-url="/admin"><a href="admin.html" th:href="@{/admin}" class="link-primary">管理者ページへ</a></li>
+            <li sec:authorize-url="/book/list"><a href="list.html" th:href="@{/book/list}" class="link-primary">図書一覧へ</a></li>
+            <li sec:authorize-url="/book/lentList"><a href="lentList.html" th:href="@{/book/lentList}" class="link-primary">レンタル中図書</a></li>
+        </ul>
+        <br>
+        <form sec:authorize="authenticated" method="post" action="index.html" th:action="@{/logout}">
+            <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                <button type="submit" class="btn btn-secondary">ログアウト</button>
+            </div>
+        </form>
+    </div>
+</body>
+</html>

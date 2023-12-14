@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="~{common/head :: head_fragment(title = 'エラーページ', scripts = ~{::script}, links = ~{::link})}"></head>
+<body>
+    <div class="container">
+        <h1 class="my-3">エラーページ</h1>
+        
+        <h1 th:text="${status} + ' ' + ${error}"></h1>
+        <p th:text="${message}"></p>
+        <p>トップページに戻るかログアウトしてください.</p>
+        <hr>
+        
+        <ul>
+            <li><a th:href="@{/}">トップページへ</a></li>
+        </ul>
+        <br>
+        <form sec:authorize="authenticated" method="post" th:action="@{/logout}">
+            <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                <button type="submit" class="btn btn-secondary">ログアウト</button>
+            </div>
+        </form>
+    </div>
+</body>
+</html>

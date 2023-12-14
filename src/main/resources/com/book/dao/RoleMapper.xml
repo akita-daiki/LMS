@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.book.dao.RoleMapper">
+
+    <select id="searchAll" resultType="com.book.entity.Role">
+        SELECT * FROM role
+    </select>
+
+    <!-- 主キー検索 -->
+    <select id="searchByIds" resultType="com.book.entity.Role" parameterType="java.util.List">
+        SELECT * FROM role
+        WHERE
+        <foreach item="id" collection="roleIds" open="id IN (" separator="," close=")">
+            #{id}
+        </foreach>
+    </select>
+
+</mapper>

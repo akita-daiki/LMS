@@ -14,12 +14,13 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import com.book.constants.BookConstants.GenreType;
+import com.book.dto.LentBookViewDto;
 import com.book.dto.MstBookViewDto;
 import com.book.entity.MstBook;
 import com.book.service.BookManageService;
 
 /**
- * 図書管理　controller
+ * 図書管理　controllerクラス
  * @author AKITA
  *
  */
@@ -45,6 +46,19 @@ public class BookManageController {
 		model.addAttribute("genres", GenreType.values());
 
 		return "book/list";
+	}
+	
+	/**
+	 * レンタル中図書一覧表示
+	 * @param model
+	 * @return
+	 */
+	@GetMapping("/book/lentList")
+	public String dsplayList(Model model) {
+		List<LentBookViewDto> myLentList = bookManageService.searchByMyLent();
+		model.addAttribute("myLentList", myLentList);
+		
+		return "book/lentList";
 	}
 
 	/**
@@ -123,6 +137,31 @@ public class BookManageController {
 		}
 	    bookManageService.update(mstBook);
 	    return "redirect:/book/list";
+	}
+	
+	/**
+	 * 図書貸出
+	 * @param bookId
+	 * @param model
+	 * @return
+	 */
+	@GetMapping("/book/lent/{id}")
+	public String lentBook(@PathVariable("id") Integer bookId, Model model) {
+		//図書の貸出処理
+		bookManageService.lentBookInsert(bookId);
+		return "redirect:/book/list";
+	}
+	
+	/**
+	 * 図書返却
+	 * @param bookId
+	 * @param model
+	 * @return
+	 */
+	@GetMapping("/book/return/{id}")
+	public String returnBook(@PathVariable("id") Integer bookId, Model model) {
+		bookManageService.returnBook(bookId);
+		return "redirect:/book/lentList";
 	}
 	
 	/**

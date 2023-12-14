@@ -1,26 +1,34 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Login</title>
-    <!-- Bootstrap CSS -->
-    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet">
-</head>
+<head th:replace="~{common/head :: head_fragment(title = 'ログイン', scripts = ~{::script}, links = ~{::link})}"></head>
 <body>
-<div class="container">
-    <form class="form-signin" method="post" action="/login">
-        <h2 class="form-signin-heading">Please sign in</h2>
-        <div th:if="${error != null}" class="alert alert-danger" role="alert" th:text="${error}"></div>
-        <p>
-            <label for="userid" class="sr-only">ユーザーID</label>
-            <input type="text" id="userId" name="userId" class="form-control" placeholder="userId" required autofocus>
-        </p>
-        <p>
-            <label for="password" class="sr-only">Password</label>
-            <input type="password" id="password" name="password" class="form-control" placeholder="Password" required>
-        </p>
-        <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
-    </form>
-</div>
-</body>
+    <div class="container">
+        <h1 class="my-3">ログイン</h1>
+        <hr>
+        <!--/* ログインエラー時にメッセージを表示 */-->
+        <div th:if="${param.error}" class="alert alert-danger">
+            ログインIDまたはパスワードが正しくありません
+        </div>
+        <form method="post" action="index.html" th:action="@{/login}">
+            <table class="table table-bordered col-md-6">
+            <tr class="form-group">
+                <th class="align-middle">ログインID</th>
+                <td><input type="text" class="form-control" name="username"></td>
+            </tr>
+            <tr class="form-group">
+                <th class="align-middle">パスワード</th>
+                <td><input type="password" class="form-control" name="password"></td>
+            </tr>
+            </table>
+            <div>
+                <input type="submit" class="btn btn-primary" value="ログイン">
+                <!--　<a href="add.html" class="btn btn-danger" >ユーザー登録</a> -->
+                <!--　<a href="@{/add}" class="btn btn-danger" >ユーザー登録</a> -->
+            </div>            
+        </form>
+    </div>
+  <!--  <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+--></body>
 </html>

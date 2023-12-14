@@ -3,8 +3,14 @@ package com.book.entity;
 import java.io.Serializable;
 import java.util.Date;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 @Data
 public class UserInfo implements Serializable {
 	
@@ -18,6 +24,8 @@ public class UserInfo implements Serializable {
      * @mbg.generated Tue Dec 12 15:09:54 JST 2023
      */
     private Integer userId;
+    
+    private String loginId;
 
     /**
      *

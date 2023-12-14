@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head th:replace="~{common/head :: head_fragment(title = '管理者ページ', scripts = ~{::script}, links = ~{::link})}"></head>
+<body>
+    <div class="container">
+        <h1 class="my-3">管理者ページ</h1>
+        <hr>
+        <ul>
+            <li><a th:href="@{/}">トップページへ</a></li>
+            <li><a th:href="@{/book/list}">図書一覧へ</a></li>
+            <li><a th:href="@{/user/add}">ユーザー登録へ</a></li>
+        </ul>
+        <br>
+        <form method="post" action="index.html" th:action="@{/logout}">
+            <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                <button type="submit" class="btn btn-secondary">ログアウト</button>
+            </div>
+        </form>
+    </div>
+</body>
+</html>

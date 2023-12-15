@@ -7,17 +7,21 @@ import lombok.EqualsAndHashCode;
 
 @Data
 @EqualsAndHashCode(callSuper = false)
-public class LentBookViewDto implements Serializable {
-
-	private Integer bookId;
+public class LentRecordsViewDto implements Serializable {
 
 	private String title;
 
 	private Integer lendingFlag;
 	
-	private Integer userId;
+	private String userName;
+	
+	private Integer lentFlag;
+	
+	private String lentFlagString;
 	
 	private String lentdate;
+	
+	private String returnDate;
 	
 	private String expectedReturndate;
 

@@ -2,6 +2,7 @@ package com.book.service;
 
 import java.sql.Timestamp;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,13 +12,20 @@ import org.springframework.stereotype.Service;
 import com.book.config.LoginUserDetails;
 import com.book.constants.AvailabilityConstants.AvailabilityType;
 import com.book.constants.BookConstants.GenreType;
+import com.book.constants.LentFlagRecordsConstants.LentRecordsType;
 import com.book.dao.CustomLentManageMapper;
+import com.book.dao.CustomLentRecordsMapper;
 import com.book.dao.LentManageMapper;
+import com.book.dao.LentRecordsMapper;
 import com.book.dao.MstBookMapper;
+import com.book.dao.UserInfoMapper;
 import com.book.dto.LentBookViewDto;
+import com.book.dto.LentRecordsViewDto;
 import com.book.dto.MstBookViewDto;
 import com.book.entity.LentManage;
+import com.book.entity.LentRecords;
 import com.book.entity.MstBook;
+import com.book.entity.UserInfo;
 import com.book.util.DateUtils;
 
 /**
@@ -33,9 +41,18 @@ public class BookManageService {
 
 	@Autowired
 	private LentManageMapper lentManageMapper;
+	
+	@Autowired
+	private LentRecordsMapper lentRecordsMapper;
+	
+	@Autowired
+	private UserInfoMapper userInfoMapper;
 
 	@Autowired
 	private CustomLentManageMapper customLentManageMapper;
+	
+	@Autowired
+	private CustomLentRecordsMapper customLentRecordsMapper;
 
 	public BookManageService(MstBookMapper mstBookMapper) {
 		this.mstBookMapper = mstBookMapper;
@@ -103,11 +120,12 @@ public class BookManageService {
 	            dto.setTitle(correspondingBook.getTitle());
 	            dto.setLendingFlag(correspondingBook.getLendingFlag());
 	        }
+	        
 
 	        // LentManage のデータを設定
 	        dto.setUserId(lentItem.getUserId());
-	        dto.setExpectedReturndate(lentItem.getExpectedReturndate());
-	        dto.setLentdate(lentItem.getLentdate());
+	        dto.setExpectedReturndate(DateUtils.dateFormat(lentItem.getExpectedReturndate()));
+	        dto.setLentdate(DateUtils.dateFormat(lentItem.getLentdate()));
 	        dto.setDeleteFlag(lentItem.getDeleteFlag());
 
 	        return dto;
@@ -188,7 +206,7 @@ public class BookManageService {
 	}
 
 	/**
-	 * 図書貸出機能
+	 * 図書貸出
 	 * @param bookId
 	 */
 	public void lentBookInsert(Integer bookId) {
@@ -216,11 +234,12 @@ public class BookManageService {
 
 		lentManageMapper.insert(lentManage);
 		mstBookMapper.updateByPrimaryKeySelective(mstBook);
+		this.lentRecordsInsert(bookId, lentManage);
 
 	}
 
 	/**
-	 * 図書返却機能
+	 * 図書返却
 	 * @param bookId
 	 */
 	public void returnBook(Integer bookId) {
@@ -239,6 +258,88 @@ public class BookManageService {
 
 		customLentManageMapper.updateByBookId(lentManage);
 		mstBookMapper.updateByPrimaryKeySelective(mstBook);
+		this.updatelentRecords(bookId);
+	}
+	
+	/**
+	 * 貸出履歴一覧
+	 * @return
+	 */
+	public List<LentRecordsViewDto>searchLentRecords(){
+		List<LentRecords> lentRecords = customLentRecordsMapper.findAll();
+		List<MstBook> bookList = mstBookMapper.findAll();
+		List<UserInfo> userList = userInfoMapper.findAll();
+		
+		Map<Integer, MstBook> bookMap = bookList.stream().collect(Collectors.toMap(MstBook::getBookId, book -> book));
+		Map<Integer, UserInfo> userMap = userList.stream().collect(Collectors.toMap(UserInfo::getUserId, user -> user));
+
+		List<LentRecordsViewDto> lentRecordsViewDtoList = lentRecords.stream().map(record -> {
+		    MstBook book = bookMap.get(record.getBookId());
+		    UserInfo user = userMap.get(record.getUserId());
+
+		    LentRecordsViewDto dto = new LentRecordsViewDto();
+		    dto.setTitle(book.getTitle());
+		    dto.setLendingFlag(book.getLendingFlag());
+		    dto.setUserName(user.getUserName());
+		    dto.setLentFlag(record.getLentflag());
+		    dto.setLentdate(DateUtils.dateFormat(record.getLentdate()));
+		    dto.setReturnDate(record.getReturndate() != null ? DateUtils.dateFormat(record.getReturndate()) : null);
+		    dto.setExpectedReturndate(DateUtils.dateFormat(record.getExpectedReturndate()));
+		    dto.setDeleteFlag(record.getDeleteFlag());
+		    
+		    // Enum変換
+		    if (record.getLentflag() != null) {
+		    	LentRecordsType lentRecordsType = LentRecordsType.fromCode(record.getLentflag());
+				dto.setLentFlagString(lentRecordsType != null ? lentRecordsType.getDisplayName() : null);
+			}
+
+		    return dto;
+		}).collect(Collectors.toList());
+		
+		return lentRecordsViewDtoList;
+		
+	}
+	
+	/**
+	 * 貸出履歴登録
+	 * @param bookId
+	 */
+	public void lentRecordsInsert(Integer bookId, LentManage lentManage) {
+		Timestamp nowDate = DateUtils.getNowDate();
+		Timestamp oneWeekLaterTimestamp = DateUtils.calculateOneWeekLaterWithEndTime(nowDate);
+		
+		LentRecords lentRecords = new LentRecords();
+		lentRecords.setRecordsId(getNextLecordsId());
+		lentRecords.setLentId(lentManage.getLentId());
+		lentRecords.setBookId(bookId);
+		lentRecords.setUserId(getCurrentUserId());
+		lentRecords.setLentdate(nowDate);
+		lentRecords.setExpectedReturndate(oneWeekLaterTimestamp);
+		lentRecords.setReturndate(DateUtils.initializeReturnDate());
+		lentRecords.setLentflag(1);
+		lentRecords.setCreateDate(nowDate);
+		lentRecords.setUpdateDate(nowDate);
+		lentRecords.setDeleteFlag(0);
+		
+		lentRecordsMapper.insert(lentRecords);
+	}
+	
+	/**
+	 * 貸出履歴更新
+	 * @param bookId
+	 */
+	public void updatelentRecords(Integer bookId) {
+		LentRecords lentRecords = new LentRecords();
+		
+		Timestamp nowDate = DateUtils.getNowDate();
+		
+		lentRecords.setBookId(bookId);
+		lentRecords.setReturndate(nowDate);
+		lentRecords.setLentflag(0);
+		lentRecords.setUpdateDate(nowDate);
+		
+		customLentRecordsMapper.updateLentRecords(lentRecords);
+		System.out.println(lentRecords);
 	}
 
 	/**
@@ -280,6 +381,18 @@ public class BookManageService {
 			return 1; // テーブルが空の場合は1を返す
 		}
 		return lastLentId + 1; // 最後のIDに1を加算
+	}
+	
+	/**
+	 * recordsId連番採取
+	 * @return getNextlentId
+	 */
+	public Integer getNextLecordsId() {
+		Integer lastRecordsId = customLentRecordsMapper.getLastRecordsId();
+		if (lastRecordsId == null) {
+			return 1; // テーブルが空の場合は1を返す
+		}
+		return lastRecordsId + 1; // 最後のIDに1を加算
 	}
 
 	//ログインユーザのID取得

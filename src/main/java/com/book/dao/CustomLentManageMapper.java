@@ -7,9 +7,9 @@ import org.apache.ibatis.annotations.Mapper;
 import com.book.entity.LentManage;
 
 /**
- * ロールテーブルマッパー
- * 
- * @author nakajima_yasuo
+ * 貸出管理カスタムマッパー
+ * @author AKITA
+ *
  */
 @Mapper
 public interface CustomLentManageMapper {

@@ -183,4 +183,8 @@
 		VALUES
 		(#{loginId}, #{name}, #{password})
 	</insert>
+	<!-- 全件検索 -->
+	<select id="findAll" resultType="com.book.entity.UserInfo">
+		SELECT * FROM user_info
+	</select>
 </mapper>

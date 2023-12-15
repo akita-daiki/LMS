@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 
 import com.book.constants.BookConstants.GenreType;
 import com.book.dto.LentBookViewDto;
+import com.book.dto.LentRecordsViewDto;
 import com.book.dto.MstBookViewDto;
 import com.book.entity.MstBook;
 import com.book.service.BookManageService;
@@ -54,11 +55,23 @@ public class BookManageController {
 	 * @return
 	 */
 	@GetMapping("/book/lentList")
-	public String dsplayList(Model model) {
+	public String dsplayLentList(Model model) {
 		List<LentBookViewDto> myLentList = bookManageService.searchByMyLent();
 		model.addAttribute("myLentList", myLentList);
 		
 		return "book/lentList";
+	}
+	
+	/**
+	 * 貸出履歴表示
+	 * @param model
+	 * @return
+	 */
+	@GetMapping("/book/lentRecords")
+	public String displayLentRecords(Model model) {
+		List<LentRecordsViewDto> lentRecords =bookManageService.searchLentRecords();
+		model.addAttribute("lentRecords", lentRecords);
+		return "book/lentRecords";
 	}
 
 	/**

@@ -1,5 +1,7 @@
 package com.book.dao;
 
+import java.util.List;
+
 import org.apache.ibatis.annotations.Mapper;
 
 import com.book.entity.UserInfo;
@@ -55,4 +57,6 @@ public interface UserInfoMapper {
     int updateByPrimaryKey(UserInfo record);
     
     UserInfo searchByLoginId(String loginId);
+    
+    List<UserInfo> findAll();
 }

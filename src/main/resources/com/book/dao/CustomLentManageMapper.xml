@@ -72,6 +72,7 @@
 			</if>
 		</set>
 		where BOOK_ID = #{bookId,jdbcType=INTEGER}
+		and LENTFLAG = 1
 	</update>
 	<!-- レンタル中図書検索 -->
 	<select id="searchByUserIdAndFlags"
@@ -81,6 +82,9 @@
 		AND LENTFLAG = 1
 		AND DELETE_FLAG = 0
 	</select>
-
+	<!-- 全件検索 -->
+	<select id="findAll" resultType="com.book.entity.LentManage">
+		SELECT * FROM lent_manage WHERE delete_flag = 0
+	</select>
 
 </mapper>

@@ -27,8 +27,9 @@ public class SecurityConfig {
                         .logoutSuccessUrl("/")
         ).authorizeHttpRequests(authz -> authz
                         .requestMatchers(PathRequest.toStaticResources().atCommonLocations()).permitAll()
-                        .requestMatchers("/general").hasRole("GENERAL")
-                        .requestMatchers("/admin").hasRole("ADMIN")
+                        .requestMatchers("/general").hasAuthority("GENERAL")
+                        .requestMatchers("/admin").hasAuthority("ADMIN")
+                        .requestMatchers("/book/lentRecords").hasAuthority("ADMIN")
                         .anyRequest().authenticated()
         );
         return http.build();

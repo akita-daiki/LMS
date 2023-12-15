@@ -2,35 +2,36 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
 	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
 
-<head th:replace="~{common/head :: head_fragment(title = 'レンタル中図書一覧', scripts = ~{::script}, links = ~{::link})}">
+<head th:replace="~{common/head :: head_fragment(title = '貸出履歴', scripts = ~{::script}, links = ~{::link})}">
 </head>
 
 <body>
 	<div class="container">
-		<h1>レンタル中図書一覧</h1>
+		<h1>貸出履歴</h1>
 		<div>
             <a th:href="@{/}">トップページへ</a>
         </div>
-		<div th:if="${myLentList}" class="table table-responsive">
+		<div th:if="${lentRecords}" class="table table-responsive">
 			<table class="table table-striped">
 				<thead class="text-nowrap">
 					<tr>
-						<!--<th>ID</th>-->
 						<th>タイトル</th>
+						<th>ユーザー名</th>
+						<th>貸出状況</th>
 						<th>貸出日</th>
+						<th>返却日</th>
 						<th>返却予定日</th>
 						<th></th>
 					</tr>
 				</thead>
 				<tbody>
-					<tr th:each="myLentList : ${myLentList}" th:object="${myLentList}" class="align-middle">
-						<!--<td th:text="*{bookId}"></td>-->
+					<tr th:each="lentRecords : ${lentRecords}" th:object="${lentRecords}" class="align-middle">
 						<td th:text="*{title}"></td>
+						<td th:text="*{userName}"></td>
+						<td th:text="*{lentFlagString}"></td>
 						<td th:text="*{lentdate}"></td>
+						<td th:text="*{returnDate}"></td>
 						<td th:text="*{expectedReturndate}"></td>
-						<td>
-							<a th:if="${myLentList.lendingFlag == 1}" th:href="@{'/book/return/' + ${myLentList.bookId}}" class="btn btn-success">返却</a>
-						</td>
 					</tr>
 				</tbody>
 			</table>

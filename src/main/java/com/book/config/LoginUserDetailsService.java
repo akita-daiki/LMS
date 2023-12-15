@@ -54,6 +54,8 @@ public class LoginUserDetailsService implements UserDetailsService {
                 user.getUserName(),
                 user.getPassword(),
                 roleNames);
+
+        System.out.println(loginUser);
         
         return new LoginUserDetails(loginUser);
     }

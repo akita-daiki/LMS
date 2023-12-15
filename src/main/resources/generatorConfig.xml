@@ -28,7 +28,7 @@
 			<property name="enableSubPackages" value="true" />
 		</javaClientGenerator>
 
-		<table tableName="lent_manage" enableDeleteByExample="false"
+		<table tableName="lent_records" enableDeleteByExample="false"
 			enableCountByExample="false" enableUpdateByExample="false"
 			selectByExampleQueryId="false" enableSelectByExample="false"
 			modelType="flat">

@@ -1,7 +1,10 @@
 package com.book.util;
 
 import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
+import java.util.Date;
+import java.util.Locale;
 
 public class DateUtils {
 
@@ -38,7 +41,7 @@ public class DateUtils {
 		LocalDateTime now = currentTimestamp.toLocalDateTime();
 
 		// 1週間後の日付を計算し、時刻部分を23:59:59に設定
-		LocalDateTime oneWeekLaterWithEndTime = now.plusWeeks(1).withHour(23).withMinute(59).withSecond(59);
+		LocalDateTime oneWeekLaterWithEndTime = now.plusWeeks(1).withHour(23).withMinute(59).withSecond(00);
 
 		// LocalDateTimeをTimestampに戻して返す
 		return Timestamp.valueOf(oneWeekLaterWithEndTime);
@@ -52,5 +55,16 @@ public class DateUtils {
     public static Timestamp initializeReturnDate() {
         LocalDateTime initialDateTime = LocalDateTime.of(1970, 1, 1, 0, 0, 0);
         return Timestamp.valueOf(initialDateTime);
+    }
+    
+    /**
+     * 日付を（yyyy/MM/dd EEEE）の形式で返します。
+     * @param date
+     * @return
+     */
+    public static String dateFormat(Date date) {
+    	
+    	SimpleDateFormat formatter = new SimpleDateFormat("yyyy/MM/dd EEEE", Locale.JAPAN);
+        return formatter.format(date);
     }
 }
